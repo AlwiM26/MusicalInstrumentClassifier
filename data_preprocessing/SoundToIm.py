@@ -20,7 +20,7 @@ for dir in os.listdir(rootdir):
         # load the wav sound to the librosa library
         y, sr = librosa.load(os.path.join(directory, filename), sr=None) 
         ps = librosa.feature.melspectrogram(y=y, sr=sr)
-        librosa.display.specshow(librosa.power_to_db(ps, ref=np
+        librosa.display.specshow(librosa.power_to_db(ps, ref=np.max))
 
         # adjust image to remove the white padding on the spectrogram image
         plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
