@@ -3,10 +3,10 @@ import numpy as np
 import tensorflow as tf
 import librosa
 from librosa import display
-from matplotlib import pytplot as plt
+from matplotlib import pyplot as plt
 from flask import Flask, escape, request, render_template
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @ app.route('/')
 def index():
@@ -31,10 +31,10 @@ def conversion(filename):
     librosa.display.specshow(librosa.power_to_db(ps, ref=np.max))
     
     plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
-    plt.savefig('{}.png'.format(fileName))
+    plt.savefig('{}.png'.format(filename))
     plt.close()
     
-    return '{}.png'.format(fileName)
+    return '{}.png'.format(filename)
 
 def predict_image(path):
     model = tf.keras.models.load_model('/model_path')
@@ -47,9 +47,9 @@ def predict_image(path):
     img_array = tf.expand_dims(img_array, 0)
 
     prediction = model.predict(img_array)
-    accuracy = tf.nn.softmax(predict[0])
+    accuracy = tf.nn.softmax(prediction[0])
 
     return '{}, {}'.format(CATEGORIES[np.argmax(prediction)], np.max(accuracy))
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run(host = '0.0.0.0', port=5000)

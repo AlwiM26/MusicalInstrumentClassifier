@@ -10,10 +10,10 @@
         android:id="@+id/btn_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:lottie_rawRes="@raw/record2"
+        app:lottie_rawRes="@raw/record"
         app:lottie_autoPlay="false"
         app:lottie_loop="true"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"/>
 
     <TextView
         android:id="@+id/txt_record"
@@ -21,7 +21,13 @@
         android:layout_height="wrap_content"
         android:text="Tap to record"
         android:textSize="24sp"
-        android:layout_below="@id/btn_record"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btn_record"/>
 
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        android:layout_below="@id/txt_record"/>
 </RelativeLayout>
