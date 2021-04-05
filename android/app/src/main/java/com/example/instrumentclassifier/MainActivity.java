@@ -8,15 +8,29 @@ import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -25,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView txtRecord;
     private LottieAnimationView btnRecord;
-    private Button btnStop;
     private MediaRecorder mRecorder;
+    private Calendar calendar;
 
     private static String fileName, savePath = null;
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
@@ -38,79 +52,68 @@ public class MainActivity extends AppCompatActivity {
 
         txtRecord = findViewById(R.id.txt_record);
         btnRecord = findViewById(R.id.btn_record);
-        btnStop = findViewById(R.id.btn_stop);
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startRecording();
+
                 btnRecord.playAnimation();
                 txtRecord.setVisibility(View.INVISIBLE);
-                startRecording();
-            }
-        });
 
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopRecording();
+                Toast.makeText(getApplicationContext(), "Start recording...", Toast.LENGTH_SHORT).show();
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnRecord.cancelAnimation();
+                        btnRecord.setProgress(0f);
+                        txtRecord.setVisibility(View.VISIBLE);
+
+                        stopRecording();
+
+                        connectToServer(fileName, savePath);
+                    }
+                }, 5000);
             }
         });
     }
 
     private void startRecording() {
-        // check permission method is used to check
-        // that the user has granted permission
-        // to record and store the audio.
         if (CheckPermissions()) {
-            //initializing filename variable
-            // with the path of the recorded audio file.
-            fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            fileName += "/AudioRecordingsssssss.3gp";
+            fileName = "rekaman_alat_musik-"
+                    + new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(calendar.getInstance().getTime()) + ".3gp";
+            savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
 
-
-            //initializing media recorder class
             mRecorder = new MediaRecorder();
-
-            //Sets the audio source to be used for recording.
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-
-            // set the output format of the audio.
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-
-            // set the audio encoder for recorded audio.
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-            //set the output file location for recorded audio
-            mRecorder.setOutputFile(fileName);
+            mRecorder.setOutputFile(savePath);
             try {
-                //Prepares the recorder to begin capturing and encoding data.
                 mRecorder.prepare();
             } catch (IOException e) {
                 Log.e("TAG", "prepare() failed");
             }
-
-            // start the audio recording.
             mRecorder.start();
         } else {
-            // if audio recording permissions are
-            // not granted by user this method will
-            // ask for runtime permission for mic and storage.
             RequestPermissions();
         }
     }
 
-    public void stopRecording() {// stop the audio recording.
-        mRecorder.stop();
+    public void stopRecording() {
+        try {
+            mRecorder.stop();
 
-        // release the media recorder object.
-        mRecorder.release();
-        mRecorder = null;
+            mRecorder.release();
+            mRecorder = null;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // this method is called when user will
-        // grant the permission for audio recording.
         switch (requestCode) {
             case REQUEST_AUDIO_PERMISSION_CODE:
                 if (grantResults.length > 0) {
@@ -127,22 +130,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean CheckPermissions() {
-        // this method is used to check permission
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
     }
 
     private void RequestPermissions() {
-        // this method is used to request the
-        // permission for audio recording and storage.
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // releasing the media player and the media recorder object
         // and set it to null
         if (mRecorder != null) {
             mRecorder.release();
@@ -150,4 +149,55 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    void connectToServer(String fileName, String savePath) {
+        // create OkHttpClient instance
+        OkHttpClient client = new OkHttpClient();
+
+        // access the recorded sound at the savePath directory
+        File audioFile = new File(savePath);
+
+        // create multipart to prepare the upload request body
+        MultipartBody.Builder mMultipartBody = new MultipartBody.Builder().setType(MultipartBody.FORM).
+                addFormDataPart("file",fileName, RequestBody.create(audioFile, MediaType.parse("*/*")));
+        // build the multipart to request body
+        RequestBody requestBody = mMultipartBody.build();
+
+        // create a new request with the server url
+        // set the post request to the request body
+        Request req = new Request.Builder()
+                .url("http://192.168.100.100:5000/uploadfile")
+                .post(requestBody)
+                .build();
+
+        client.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                        call.cancel();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            showResponse(response.body().string());
+                        } catch (IOException e) {
+                            showResponse(e.toString());
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    void showResponse(String res) {
+        Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
+    }
 }

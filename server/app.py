@@ -8,48 +8,54 @@ from flask import Flask, escape, request, render_template
 
 app = Flask(__name__)
 
-@ app.route('/')
+@app.route('/')
 def index():
-    return 'Hello, World !'
+    return 'Hello'
 
-@ app.route('/uploadfile', methods = ['POST'])
+@app.route('/uploadfile', methods=['POST'])
 def uploadfile():
     uploaded_file = request.files['file']
-    
     if uploaded_file.filename != '':
         uploaded_file.save(uploaded_file.filename)
-    
-    file_path = conversion(uploaded_file.filename)
+        
+        file_path = konversi(uploaded_file.filename)
 
-    prediction = predict_image(file_path)
+        prediksi = prediksi_gambar(file_path)
+        print(prediksi)
 
-    return prediction
+        return prediksi
 
-def conversion(filename):
-    y, sr = librosa.load(filename, sr=None)
-    ps = librosa.feature.melspectrogram(y=y, sr=sr)
-    librosa.display.specshow(librosa.power_to_db(ps, ref=np.max))
-    
-    plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
-    plt.savefig('{}.png'.format(filename))
-    plt.close()
-    
-    return '{}.png'.format(filename)
-
-def predict_image(path):
-    model = tf.keras.models.load_model('/model_path')
+def prediksi_gambar(path):
+    model = tf.keras.models.load_model('/Users/macalwi/Downloads/MIC.h5')
 
     CATEGORIES = ['Akordion', 'Angklung', 'Kompang', 'Rebab']
 
-    img = tf.keras.preprocessing.image.load_img(path, target_size=(200, 200))
+    img = tf.keras.preprocessing.image.load_img(
+        path, target_size=(200, 200)
+    )
 
     img_array = tf.keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)
 
-    prediction = model.predict(img_array)
-    accuracy = tf.nn.softmax(prediction[0])
+    prediksi = model.predict(img_array)
+    akurasi = tf.nn.softmax(prediksi[0])
 
-    return '{}, {}'.format(CATEGORIES[np.argmax(prediction)], np.max(accuracy))
+    return '{}, {}'.format(CATEGORIES[np.argmax(prediksi)], np.max(akurasi))
+    
+def konversi(fileName):
+    plt.switch_backend('Agg')
+
+    y, sr = librosa.load(fileName, sr=None) # Load the wav sound
+    ps = librosa.feature.melspectrogram(y=y, sr=sr)
+    librosa.display.specshow(librosa.power_to_db(ps, ref=np.max))
+
+    plt.subplots_adjust(top = 1, bottom = 0, right = 1, left = 0, 
+                hspace = 0, wspace = 0)
+
+    plt.savefig('{}.png'.format(fileName))
+
+    return '{}.png'.format(fileName)
+
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)
