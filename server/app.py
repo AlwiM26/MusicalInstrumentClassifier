@@ -18,15 +18,15 @@ def uploadfile():
     if uploaded_file.filename != '':
         uploaded_file.save(uploaded_file.filename)
         
-        file_path = konversi(uploaded_file.filename)
+        file_path = conversion(uploaded_file.filename)
 
-        prediksi = prediksi_gambar(file_path)
-        print(prediksi)
+        prediction = predict_image(file_path)
+        print(prediction)
 
-        return prediksi
+        return prediction
 
-def prediksi_gambar(path):
-    model = tf.keras.models.load_model('/Users/macalwi/Downloads/MIC.h5')
+def predict_image(path):
+    model = tf.keras.models.load_model('/model_directory')
 
     CATEGORIES = ['Akordion', 'Angklung', 'Kompang', 'Rebab']
 
@@ -37,12 +37,12 @@ def prediksi_gambar(path):
     img_array = tf.keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)
 
-    prediksi = model.predict(img_array)
-    akurasi = tf.nn.softmax(prediksi[0])
+    prediction = model.predict(img_array)
+    accuracy = tf.nn.softmax(prediksi[0])
 
-    return '{}, {}'.format(CATEGORIES[np.argmax(prediksi)], np.max(akurasi))
+    return '{}, {}'.format(CATEGORIES[np.argmax(prediction)], np.max(accuracy))
     
-def konversi(fileName):
+def conversion(fileName):
     plt.switch_backend('Agg')
 
     y, sr = librosa.load(fileName, sr=None) # Load the wav sound

@@ -11,11 +11,14 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private LottieAnimationView btnRecord;
     private MediaRecorder mRecorder;
     private Calendar calendar;
+    private BottomSheetDialog bottomSheetDialog;
 
     private static String fileName, savePath = null;
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnRecord.setEnabled(false);
                 startRecording();
 
                 btnRecord.playAnimation();
@@ -73,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                         stopRecording();
 
                         connectToServer(fileName, savePath);
+
+                        btnRecord.setEnabled(true);
                     }
                 }, 5000);
             }
@@ -92,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
             mRecorder.setOutputFile(savePath);
             try {
                 mRecorder.prepare();
+                mRecorder.start();
             } catch (IOException e) {
                 Log.e("TAG", "prepare() failed");
             }
-            mRecorder.start();
         } else {
             RequestPermissions();
         }
@@ -150,6 +157,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void connectToServer(String fileName, String savePath) {
+        btnRecord = findViewById(R.id.btn_record);
+
+        btnRecord.setAnimation(R.raw.loading);
+        btnRecord.playAnimation();
+
+        txtRecord.setVisibility(View.INVISIBLE);
+
         // create OkHttpClient instance
         OkHttpClient client = new OkHttpClient();
 
@@ -165,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         // create a new request with the server url
         // set the post request to the request body
         Request req = new Request.Builder()
-                .url("http://192.168.100.100:5000/uploadfile")
+                .url("http://192.168.100.103:5000/uploadfile")
                 .post(requestBody)
                 .build();
 
@@ -177,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         call.cancel();
+                        btnRecord.setAnimation(R.raw.record);
+                        btnRecord.setProgress(0f);
                     }
                 });
             }
@@ -188,6 +204,9 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             showResponse(response.body().string());
+                            txtRecord.setVisibility(View.VISIBLE);
+                            btnRecord.setAnimation(R.raw.record);
+                            btnRecord.setProgress(0f);
                         } catch (IOException e) {
                             showResponse(e.toString());
                         }
@@ -199,5 +218,13 @@ public class MainActivity extends AppCompatActivity {
 
     void showResponse(String res) {
         Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
+
+        bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.BottomSheetTheme);
+
+        View resultSheet = LayoutInflater.from(getApplicationContext()).inflate(R.layout.result_sheet, (ViewGroup) findViewById(R.id.bottom_sheet));
+
+        bottomSheetDialog.setContentView(resultSheet);
+        bottomSheetDialog.show();
+
     }
 }

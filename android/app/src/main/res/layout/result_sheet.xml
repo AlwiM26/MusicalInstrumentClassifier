@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    style="@style/Animation.Design.BottomSheetDialog">
+
+    <TextView
+        android:id="@+id/txt_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CHORDOPHONES"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:textColor="@android:color/holo_green_dark"/>
+
+    <ImageView
+        android:id="@+id/img_result"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:src="@drawable/rebab"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/detail_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chordophone is a musical instrument that makes sound by way of a vibrating string or strings stretched between two points. It is one of the four main divisions of instruments in the original Hornbostel-Sachs scheme of musical instrument classification."
+        android:textSize="18dp"
+        android:layout_marginTop="24dp"
+        android:padding="18dp"/>
+
+</LinearLayout>

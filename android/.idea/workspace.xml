@@ -28,11 +28,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3e161b6-560c-4c05-b397-7e96c86a076a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/instrumentclassifier/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/instrumentclassifier/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-night/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-night/themes.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app.py" afterDir="false" />
     </list>
@@ -47,6 +45,14 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="layoutResourceFile" />
+        <option value="resourceFile" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -57,16 +63,27 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="4507fff" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2021-04-09T14:26:52.281Z" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\dev\ml\MusicalInstrumentClassifier\android\app\src\main\res\drawable" />
       <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
+    </key>
+    <key name="android.template.-1327191182">
+      <recent name="com.example.instrumentclassifier" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\dev\ml\MusicalInstrumentClassifier\android\app\src\main\res\drawable" />
+      <recent name="D:\dev\ml\MusicalInstrumentClassifier\android\app\src\main\res\raw" />
     </key>
   </component>
   <component name="RunManager">
@@ -161,22 +178,38 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1606" height="316" key="GridCell.Tab.0.bottom" timestamp="1617646307329">
-      <screen x="0" y="23" width="1920" height="1013" />
+    <state x="92" y="92" width="1736" height="856" key="AVDManager" timestamp="1617978610673">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="92" y="92" width="1736" height="856" key="AVDManager/0.0.1920.1040@0.0.1920.1040" timestamp="1617978610673" />
+    <state x="731" y="279" key="AndroidCreateResourceFileDialog" timestamp="1618308842002">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="731" y="279" key="AndroidCreateResourceFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1618308842002" />
+    <state width="1686" height="260" key="GridCell.Tab.0.bottom" timestamp="1617988736714">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1686" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1617988736714" />
     <state width="1606" height="316" key="GridCell.Tab.0.bottom/0.23.1920.1013@0.23.1920.1013" timestamp="1617646307329" />
-    <state width="1606" height="316" key="GridCell.Tab.0.center" timestamp="1617646307329">
-      <screen x="0" y="23" width="1920" height="1013" />
+    <state width="1686" height="260" key="GridCell.Tab.0.center" timestamp="1617988736714">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1686" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1617988736714" />
     <state width="1606" height="316" key="GridCell.Tab.0.center/0.23.1920.1013@0.23.1920.1013" timestamp="1617646307329" />
-    <state width="1606" height="316" key="GridCell.Tab.0.left" timestamp="1617646307328">
-      <screen x="0" y="23" width="1920" height="1013" />
+    <state width="1686" height="260" key="GridCell.Tab.0.left" timestamp="1617988736714">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1686" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1617988736714" />
     <state width="1606" height="316" key="GridCell.Tab.0.left/0.23.1920.1013@0.23.1920.1013" timestamp="1617646307328" />
-    <state width="1606" height="316" key="GridCell.Tab.0.right" timestamp="1617646307329">
-      <screen x="0" y="23" width="1920" height="1013" />
+    <state width="1686" height="260" key="GridCell.Tab.0.right" timestamp="1617988736714">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1686" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1617988736714" />
     <state width="1606" height="316" key="GridCell.Tab.0.right/0.23.1920.1013@0.23.1920.1013" timestamp="1617646307329" />
+    <state x="203" y="168" key="SettingsEditor" timestamp="1617978293214">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="203" y="168" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1617978293214" />
     <state x="490" y="247" width="670" height="676" key="search.everywhere.popup" timestamp="1617541493797">
       <screen x="0" y="23" width="1920" height="1013" />
     </state>
